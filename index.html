@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Birthday</title>
+    <style>
+        body {
+            background: rgb(168, 143, 170);
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        /* Flower Circle */
+        .flower-circle-container {
+            position: relative;
+            width: 420px;
+            height: 420px;
+            margin: 48px auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flower-circle-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.3rem;
+            font-weight: bold;
+            color: #a0522d;
+            letter-spacing: 0.05em;
+            text-shadow: 0 2px 8px #fff8, 0 1px 0 #fff;
+            z-index: 2;
+            width: 320px;
+        }
+        .flower {
+            position: absolute;
+            width: 54px;
+            height: 54px;
+            z-index: 1;
+        }
+        /* Simple flower SVG styling */
+        .flower svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        /* Animated Heading */
+        .birthday-heading {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+        }
+        .birthday-heading span {
+            opacity: 0;
+            transform: translateX(-30px);
+            animation: slideIn 0.5s forwards;
+            margin: 0 2px;
+        }
+        /* Animation delay for each word */
+        .birthday-heading span:nth-child(1) { animation-delay: 0.2s; }
+        .birthday-heading span:nth-child(2) { animation-delay: 0.8s; }
+        .birthday-heading span:nth-child(3) { animation-delay: 1.4s; }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Cake */
+        .cake-container {
+            margin: 40px auto 0;
+            width: 220px;
+            position: relative;
+        }
+        .cake-base {
+            width: 200px;
+            height: 80px;
+            background: #7b3f00;
+            border-radius: 0 0 100px 100px / 0 0 60px 60px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 8px 20px #d1a17b77;
+        }
+        .cake-top {
+            width: 180px;
+            height: 40px;
+            background: #a0522d;
+            border-radius: 90px 90px 60px 60px / 40px 40px 30px 30px;
+            position: absolute;
+            left: 10px;
+            top: -20px;
+            z-index: 2;
+            box-shadow: 0 4px 10px #d1a17b55;
+        }
+        /* Candles */
+        .candles {
+            position: absolute;
+            top: -38px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 28px;
+            z-index: 3;
+        }
+        .candle {
+            width: 12px;
+            height: 38px;
+            background: #fff;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 2px 4px #0001;
+            border: 2px solid #e0e0e0;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        .candle:nth-child(1) { background: #ffb347; }
+        .candle:nth-child(2) { background: #b0e0e6; }
+        .candle:nth-child(3) { background: #ffb6c1; }
+        /* Candle fire */
+        .flame {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 14px;
+            height: 22px;
+            pointer-events: none;
+        }
+        .flame-shape {
+            width: 14px;
+            height: 22px;
+            background: radial-gradient(ellipse at center, #fffbe0 60%, #ffb300 90%, #ff6f00 100%);
+            border-radius: 50% 50% 60% 60% / 60% 60% 100% 100%;
+            opacity: 0.85;
+            animation: flameFlicker 1s infinite alternate;
+        }
+        .candle:nth-child(2) .flame-shape { animation-delay: 0.3s; }
+        .candle:nth-child(3) .flame-shape { animation-delay: 0.6s; }
+        @keyframes flameFlicker {
+            0% { transform: scaleY(1) scaleX(1); opacity: 0.85; }
+            30% { transform: scaleY(1.1) scaleX(0.95) translateY(-2px); opacity: 1; }
+            60% { transform: scaleY(0.95) scaleX(1.05) translateY(2px); opacity: 0.8; }
+            100% { transform: scaleY(1) scaleX(1); opacity: 0.85; }
+        }
+
+        /* Photo */
+        .photo {
+            margin: 40px auto 0;
+            width: 320px;             /* Increased width */
+            height: 280px;            /* Height unchanged */
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 6px 24px #0002;
+            border: 8px solid #fff;
+            background: #eee;
+        }
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Envelope */
+        .envelope-container {
+            margin: 40px auto 0;
+            width: 120px;
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+        }
+        .envelope {
+            width: 120px;
+            height: 80px;
+            background: #fff;
+            border: 2px solid #d1a17b;
+            border-radius: 0 0 10px 10px;
+            position: relative;
+            box-shadow: 0 4px 12px #d1a17b33;
+            transition: box-shadow 0.2s;
+        }
+        .envelope:hover {
+            box-shadow: 0 8px 24px #d1a17b55;
+        }
+        .envelope-flap {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            width: 120px;
+            height: 40px;
+            background: #ffe6c7;
+            border-bottom: 2px solid #d1a17b;
+            border-radius: 10px 10px 0 0;
+            clip-path: polygon(0 100%, 50% 0, 100% 100%);
+            z-index: 2;
+            transition: transform 0.4s;
+        }
+        .envelope.open .envelope-flap {
+            transform: rotateX(70deg) translateY(-10px);
+        }
+        /* Message */
+        .message {
+            display: none;
+            margin: 20px auto 0;
+            max-width: 320px;
+            background: #fffbe0;
+            border: 2px solid #d1a17b;
+            border-radius: 12px;
+            padding: 24px 18px;
+            font-size: 1.1rem;
+            color: #7b3f00;
+            box-shadow: 0 4px 16px #d1a17b22;
+            animation: fadeInMsg 0.7s;
+        }
+        .message.show {
+            display: block;
+            animation: fadeInMsg 0.7s;
+        }
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        /* Balloons */
+        .balloon {
+            position: fixed;
+            width: 44px;
+            height: 60px;
+            border-radius: 22px 22px 30px 30px / 30px 30px 60px 60px;
+            z-index: 100;
+            box-shadow: 0 4px 12px #0002;
+            animation: balloonUp 6s linear forwards;
+            pointer-events: none;
+        }
+        .balloon::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -18px;
+            width: 2px;
+            height: 18px;
+            background: #aaa;
+            transform: translateX(-50%);
+            border-radius: 2px;
+            opacity: 0.7;
+        }
+        @keyframes balloonUp {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.9) rotate(-8deg);
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(-30px) scale(1) rotate(4deg);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(-520px) scale(1.05) rotate(-6deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-600px) scale(1.1) rotate(8deg);
+            }
+        }
+
+        /* Corner Flowers */
+        .corner-flowers {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            pointer-events: none;
+            z-index: 200;
+        }
+        .corner-flowers svg {
+            width: 44px;
+            height: 44px;
+        }
+        .corner-top-left { top: 0; left: 0; }
+        .corner-top-right { top: 0; right: 0; }
+        .corner-bottom-left { bottom: 0; left: 0; }
+        .corner-bottom-right { bottom: 0; right: 0; }
+    </style>
+</head>
+<body>
+    <!-- Flower Circle with Heading -->
+    <div class="flower-circle-container">
+        <div class="flower-circle-text">
+            Happy<br>Birthday<br>My Pookie Mama
+        </div>
+        <!-- 12 Flowers around the circle -->
+        <div class="flower" style="top:0; left:50%; transform:translate(-50%,0) rotate(0deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#ffb6c1"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#f2994a" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:18px; left:110px; transform:rotate(30deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#f2c94c"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#bb6bd9" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:60px; left:36px; transform:rotate(60deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#6fcf97"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#f2c94c" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:110px; left:18px; transform:rotate(90deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#bb6bd9"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#6fcf97" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:180px; left:0; transform:rotate(120deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#f2994a"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#bb6bd9" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:260px; left:0; transform:rotate(150deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#eb5757"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#f2994a" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="bottom:0; left:50%; transform:translate(-50%,0) rotate(180deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#56ccf2"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#eb5757" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="bottom:18px; left:110px; transform:rotate(210deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#ffb6c1"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#56ccf2" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="bottom:60px; left:36px; transform:rotate(240deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#f2c94c"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#ffb6c1" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="bottom:110px; left:18px; transform:rotate(270deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#bb6bd9"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#f2c94c" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#6fcf97" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:260px; left:18px; transform:rotate(300deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#6fcf97"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#bb6bd9" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#f2994a" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+        <div class="flower" style="top:110px; left:18px; transform:rotate(330deg);">
+            <svg viewBox="0 0 54 54"><circle cx="27" cy="27" r="10" fill="#f2994a"/><g>
+                <ellipse cx="27" cy="10" rx="7" ry="14" fill="#6fcf97" opacity="0.8"/>
+                <ellipse cx="44" cy="18" rx="7" ry="14" fill="#bb6bd9" opacity="0.8" transform="rotate(30 27 27)"/>
+                <ellipse cx="44" cy="36" rx="7" ry="14" fill="#f2c94c" opacity="0.8" transform="rotate(60 27 27)"/>
+                <ellipse cx="27" cy="44" rx="7" ry="14" fill="#ffb6c1" opacity="0.8" transform="rotate(90 27 27)"/>
+                <ellipse cx="10" cy="36" rx="7" ry="14" fill="#eb5757" opacity="0.8" transform="rotate(120 27 27)"/>
+                <ellipse cx="10" cy="18" rx="7" ry="14" fill="#56ccf2" opacity="0.8" transform="rotate(150 27 27)"/>
+            </g></svg>
+        </div>
+    </div>
+
+    <!-- Add a gap below the heading -->
+    <div style="height: 32px;"></div>
+
+    <!-- Cake with Candles -->
+    <div class="cake-container">
+        <div class="cake-top"></div>
+        <div class="cake-base"></div>
+        <div class="candles">
+            <div class="candle">
+                <div class="flame">
+                    <div class="flame-shape"></div>
+                </div>
+            </div>
+            <div class="candle">
+                <div class="flame">
+                    <div class="flame-shape"></div>
+                </div>
+            </div>
+            <div class="candle">
+                <div class="flame">
+                    <div class="flame-shape"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Photo -->
+    <div class="photo">
+        <!-- Replace the src below with your friend's photo -->
+        <img src="photo1.jpg">
+    </div>
+
+    <!-- Envelope for Message -->
+    <div class="envelope-container" id="envelopeBtn" title="Click to open the message!">
+        <div class="envelope-flap"></div>
+        <div class="envelope"></div>
+        <div style="margin-top:8px; font-size:1rem; color:#a0522d; font-weight:bold;">Click here</div>
+    </div>
+
+    <!-- Hidden Message -->
+    <div class="message" id="birthdayMsg">
+        প্রিয় মামা,<br>
+        তোমার জন্মদিনে অনেক অনেক শুভেচ্ছা ও ভালোবাসা। আল্লাহ তোমার জীবনকে সুখ, আনন্দ আর সাফল্যে ভরিয়ে তুলুক। আজকের দিনটা হোক তোমার জন্য বিশেষ ও স্মরণীয়।<br>
+        <b>Happy Birthday My Pookie mama<3</b>
+    </div>
+
+    <!-- Corner Flowers: Top Left -->
+    <div class="corner-flowers corner-top-left">
+        <div style="position:absolute; top:8px; left:8px; transform:rotate(-10deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#ffb6c1"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#f2994a" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#6fcf97" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#56ccf2" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; top:40px; left:24px; transform:rotate(15deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#f2c94c"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#bb6bd9" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#ffb6c1" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#f2994a" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; top:70px; left:60px; transform:rotate(-20deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#bb6bd9"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#6fcf97" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#f2c94c" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#bb6bd9" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+    </div>
+    <!-- Corner Flowers: Top Right -->
+    <div class="corner-flowers corner-top-right">
+        <div style="position:absolute; top:8px; right:8px; transform:rotate(10deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#6fcf97"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#f2c94c" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#bb6bd9" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#ffb6c1" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; top:40px; right:24px; transform:rotate(-15deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#f2994a"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#6fcf97" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#bb6bd9" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#f2c94c" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; top:70px; right:60px; transform:rotate(20deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#eb5757"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#f2994a" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#bb6bd9" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#6fcf97" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+    </div>
+    <!-- Corner Flowers: Bottom Left -->
+    <div class="corner-flowers corner-bottom-left">
+        <div style="position:absolute; bottom:8px; left:8px; transform:rotate(15deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#56ccf2"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#eb5757" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#f2994a" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#bb6bd9" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; bottom:40px; left:24px; transform:rotate(-10deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#ffb6c1"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#56ccf2" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#eb5757" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#f2994a" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; bottom:70px; left:60px; transform:rotate(20deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#f2c94c"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#ffb6c1" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#56ccf2" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#eb5757" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+    </div>
+    <!-- Corner Flowers: Bottom Right -->
+    <div class="corner-flowers corner-bottom-right">
+        <div style="position:absolute; bottom:8px; right:8px; transform:rotate(-10deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#bb6bd9"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#f2c94c" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#ffb6c1" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#56ccf2" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; bottom:40px; right:24px; transform:rotate(15deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#6fcf97"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#bb6bd9" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#f2c94c" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#ffb6c1" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+        <div style="position:absolute; bottom:70px; right:60px; transform:rotate(-20deg);">
+            <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="8" fill="#f2994a"/><g>
+                <ellipse cx="22" cy="8" rx="5" ry="10" fill="#6fcf97" opacity="0.8"/>
+                <ellipse cx="36" cy="14" rx="5" ry="10" fill="#bb6bd9" opacity="0.8" transform="rotate(30 22 22)"/>
+                <ellipse cx="36" cy="30" rx="5" ry="10" fill="#f2c94c" opacity="0.8" transform="rotate(60 22 22)"/>
+            </g></svg>
+        </div>
+    </div>
+
+    <script>
+        // Envelope click to show message
+        const envelopeBtn = document.getElementById('envelopeBtn');
+        const message = document.getElementById('birthdayMsg');
+        envelopeBtn.addEventListener('click', function() {
+            envelopeBtn.classList.toggle('open');
+            message.classList.toggle('show');
+        });
+
+        // Balloon animation
+        const balloonColors = ['#ff6f91', '#6fcf97', '#56ccf2', '#f2c94c', '#bb6bd9', '#f2994a', '#eb5757'];
+        function createBalloon(side = 'left') {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.background = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+            balloon.style.left = side === 'left' ? '40px' : '';
+            balloon.style.right = side === 'right' ? '40px' : '';
+            balloon.style.bottom = '-120px';
+            balloon.style.animationDelay = (Math.random() * 1.5) + 's';
+            document.body.appendChild(balloon);
+
+            // Remove balloon after animation
+            balloon.addEventListener('animationend', () => {
+                balloon.remove();
+            });
+        }
+
+        function launchBalloons() {
+            createBalloon('left');
+            createBalloon('right');
+        }
+
+        // Launch balloons every 10 seconds
+        setInterval(launchBalloons, 10000);
+        // Launch some at start
+        setTimeout(launchBalloons, 1000);
+
+        // --- Scroll Down Popup ---
+        // Create popup HTML
+        const scrollPopup = document.createElement('div');
+        scrollPopup.id = 'scrollDownPopup';
+        scrollPopup.style.display = 'flex';
+        scrollPopup.style.alignItems = 'center';
+        scrollPopup.style.justifyContent = 'center';
+        scrollPopup.style.position = 'fixed';
+        scrollPopup.style.bottom = '20px';
+        scrollPopup.style.left = '50%';
+        scrollPopup.style.transform = 'translateX(-50%)';
+        scrollPopup.style.width = '300px';
+        scrollPopup.style.height = '60px';
+        scrollPopup.style.background = '#fffbe0';
+        scrollPopup.style.border = '2px solid #d1a17b';
+        scrollPopup.style.borderRadius = '30px';
+        scrollPopup.style.boxShadow = '0 4px 12px #d1a17b33';
+        scrollPopup.style.fontSize = '1.2rem';
+        scrollPopup.style.color = '#7b3f00';
+        scrollPopup.style.fontWeight = 'bold';
+        scrollPopup.style.zIndex = '300';
+        scrollPopup.innerHTML = '🎉 Scroll down for more surprises! 🎈';
+
+        document.body.appendChild(scrollPopup);
+
+        // Fade in animation for the popup
+        setTimeout(() => {
+            scrollPopup.style.opacity = '1';
+            scrollPopup.style.transform = 'translateX(-50%) translateY(0)';
+        }, 100);
+
+        // Fade out and remove the popup after some time
+        setTimeout(() => {
+            scrollPopup.style.opacity = '0';
+            scrollPopup.style.transform = 'translateX(-50%) translateY(10px)';
+            setTimeout(() => {
+                scrollPopup.remove();
+            }, 500);
+        }, 5000);
+
+        // Optional: Add click event to remove the popup
+        scrollPopup.addEventListener('click', () => {
+            scrollPopup.style.opacity = '0';
+            scrollPopup.style.transform = 'translateX(-50%) translateY(10px)';
+            setTimeout(() => {
+                scrollPopup.remove();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
